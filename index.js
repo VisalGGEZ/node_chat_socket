@@ -1,6 +1,7 @@
-const app = require('express')()
-const http = require('http').createServer(app)
-const PORT = process.env.PORT || 3000
+var express = require('express'),
+    app = express(),
+    server = require('http').createServer(app),
+    io = require('socket.io').listen(server)
 
 app.get('/', (req, res) => {
     res.send("Node Server is running. Yay!!")
@@ -9,10 +10,10 @@ app.get('/', (req, res) => {
 //Socket Logic
 const socketio = require('socket.io')(http)
 
-socketio.on("connection", (userSocket) => {
+io.socket.on("connection", (userSocket) => {
     userSocket.on("send_message", (data) => {
         userSocket.broadcast.emit("receive_message", data)
     })
 })
 
-http.listen(PORT, ()=>console.log(`Listening on ${PORT}`))
+server.listen(process.env.PORT || 3000);
