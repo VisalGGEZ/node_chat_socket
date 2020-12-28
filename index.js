@@ -1,18 +1,15 @@
-const app = require('express')()
-const http = require('http').createServer(app)
+var express = require('express');
+var app = require('express')();
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
 
+io.on('connection', function (socket) {
+    console.log(socket.id, 'joined');
+    socket.on('/test', function (msg) {
+        console.log(msg);
+    });
+});
 
-app.get('/', (req, res) => {
-    res.send("Node Server is running. Yay!!")
-})
-
-//Socket Logic
-const socketio = require('socket.io')(http)
-
-socketio.on("connection", (userSocket) => {
-    userSocket.on("send_message", (data) => {
-        userSocket.broadcast.emit("receive_message", data)
-    })
-})
-
-http.listen(process.env.PORT)
+var port = 8080;
+console.log(port);
+server.listen(port);
