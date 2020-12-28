@@ -15,4 +15,4 @@ socketio.on("connection", (userSocket) => {
     })
 })
 
-http.listen(8000)
+http.listen(process.env.PORT)
